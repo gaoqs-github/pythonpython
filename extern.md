@@ -106,9 +106,8 @@ void use_func() {
 
 假设我们有以下的头文件 mytemplate.h，其中包含一个简单的模板类 MyTemplate 的声明：
 
-cpp
-Copy code
-// mytemplate.h
+```C++
+mytemplate.h
 #ifndef MYTEMPLATE_H
 #define MYTEMPLATE_H
 
@@ -119,26 +118,26 @@ public:
 };
 
 #endif  // MYTEMPLATE_H
-然后，在一个源文件 mytemplate.cpp 中，我们提供了模板类 MyTemplate 的实例化定义：
+```
 
-cpp
-Copy code
-// mytemplate.cpp
+然后，在一个源文件 mytemplate.cpp 中，我们提供了模板类 MyTemplate 的实例化定义：
+```C++
+mytemplate.cpp
 #include "mytemplate.h"
 
 template <typename T>
 void MyTemplate<T>::print(const T& value) {
-    // 实现模板类的成员函数
-    // ...
+// 实现模板类的成员函数
+// ...
 }
 
 // 显式实例化 MyTemplate<int> 类型
 template class MyTemplate<int>;
+```
 在另一个源文件 main.cpp 中，我们使用了 extern 关键字来声明模板类 MyTemplate：
 
-cpp
-Copy code
-// main.cpp
+```C++
+main.cpp
 #include "mytemplate.h"
 
 // 声明模板类 MyTemplate<int>
@@ -150,6 +149,7 @@ int main() {
 
     return 0;
 }
+```
 在这个示例中，模板类 MyTemplate 的实例化定义被放在了 mytemplate.cpp 文件中，并通过 template class MyTemplate<int> 进行了显式实例化。
 
 在 main.cpp 文件中，我们使用 extern 关键字声明了模板类 MyTemplate<int>，告诉编译器该实例化定义将在其他编译单元中提供。然后，我们在 main() 函数中使用 MyTemplate<int> 类型创建了对象，并调用了其中的成员函数。
@@ -168,50 +168,52 @@ int main() {
 
 假设我们有以下的头文件 mytemplate.h，其中只包含模板类 MyTemplate 的声明：
 
-cpp
-Copy code
+```C++
 // mytemplate.h
+// 包含模板的实例化定义
+#include "mytemplate_impl.h"
+
 #ifndef MYTEMPLATE_H
 #define MYTEMPLATE_H
 
 template <typename T>
 class MyTemplate {
 public:
-    void print(const T& value);
+void print(const T& value);
 };
 
-// 包含模板的实例化定义
-#include "mytemplate_impl.h"
-
 #endif  // MYTEMPLATE_H
+```
+
 然后，在独立的源文件 mytemplate_impl.cpp 中，我们提供了模板类 MyTemplate 的实例化定义：
 
-cpp
-Copy code
+```C++
 // mytemplate_impl.cpp
 #include "mytemplate.h"
 
 template <typename T>
 void MyTemplate<T>::print(const T& value) {
-    // 实现模板类的成员函数
-    // ...
+// 实现模板类的成员函数
+// ...
 }
 
 // 显式实例化 MyTemplate<int> 类型
 template class MyTemplate<int>;
-在这种结构下，我们可以在其他源文件中直接包含 mytemplate.h 头文件，并使用模板类 MyTemplate，而不需要再使用 extern 声明。
+```
 
-cpp
-Copy code
+
+在这种结构下，我们可以在其他源文件中直接包含 mytemplate.h 头文件，并使用模板类 MyTemplate，而不需要再使用 extern 声明。
+```C++
 // main.cpp
 #include "mytemplate.h"
 
 int main() {
-    MyTemplate<int> obj;
+MyTemplate<int> obj;
     obj.print(42);
-
     return 0;
 }
+```
+
 通过将模板的声明放在头文件中，可以使其他源文件能够访问和使用模板类。而将模板的实例化定义放在独立的源文件中，则可以避免重复定义，并在需要时进行显式实例化。
 
 这种分离模板声明和实例化定义的方式可以提高编译效率，避免重复定义的错误，并使代码结构更清晰和可维护。
